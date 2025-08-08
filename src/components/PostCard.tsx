@@ -10,6 +10,7 @@ import Input from './blocks/Input'
 import { Post } from '../interfaces/posts'
 import { useMutation } from '@apollo/client';
 import { UPDATE_LIKE_AMOUNT } from '../graphql/mutations/incrementLikes';
+import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/getCommentsByPostId';
 
 type PostCardProps = Post
 
@@ -49,6 +50,11 @@ const PostCard = ({
 
 
     const toggleExpanded = () => setIsExpanded(prev => !prev)
+
+    // Fetch comments for this post live from cache/server
+  const { data } = useQuery(GET_COMMENTS_BY_POST_ID, {
+    variables: { postId: post_id },
+  });
 
   const comments = commentsCollection?.edges?.map(edge => edge.node.comment) ?? []
 

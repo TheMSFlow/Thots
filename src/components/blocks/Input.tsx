@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
+import { GET_ALL_POSTS } from '../../graphql/queries/getPosts';
 import { ADD_COMMENT } from '../../graphql/mutations/addComment';
+import { GetAllPostsData, CommentNode } from '../../interfaces/posts';
 import Send from '../buttons/Send';
+import toast from 'react-hot-toast';
 
 interface InputProps {
   postId: string;
 }
+
 
 const Input: React.FC<InputProps> = ({ postId }) => {
   const [text, setText] = useState('');
@@ -15,18 +19,66 @@ const Input: React.FC<InputProps> = ({ postId }) => {
     e.preventDefault();
     if (!text.trim()) return;
 
+    const newComment: CommentNode = {
+      post_id: postId,
+      comment: text.trim(),
+      __typename: 'comments'
+    };
+
     try {
       await addComment({
         variables: {
           postId,
           comment: text.trim(),
         },
-        // Optional: Update UI optimistically (we'll improve this in later steps)
+        optimisticResponse: {
+          insertIntocommentsCollection: {
+            __typename: 'commentsInsertResponse',
+            affectedCount: 1,
+            records: [newComment],
+          },
+        },
+        update: (cache, { data }) => {
+          const existing = cache.readQuery<GetAllPostsData>({ query: GET_ALL_POSTS });
+          if (!existing) return;
+
+          const updatedPosts = existing.postsCollection.edges.map((edge) => {
+            if (edge.node.post_id === postId) {
+              return {
+                ...edge,
+                node: {
+                  ...edge.node,
+                  commentsCollection: {
+                    ...edge.node.commentsCollection,
+                    edges: [
+                      ...edge.node.commentsCollection.edges,
+                      { __typename: 'commentsEdge', node: newComment },
+                    ],
+                  },
+                },
+              };
+            }
+            return edge;
+          });
+
+          cache.writeQuery({
+            query: GET_ALL_POSTS,
+            data: {
+              ...existing,
+              postsCollection: {
+                ...existing.postsCollection,
+                edges: updatedPosts,
+              },
+            },
+          });
+        },
       });
 
+      toast.success('Comment added');
       setText('');
     } catch (err) {
       console.error('Failed to submit comment:', err);
+      toast.error(err instanceof Error ? err.message : 'Failed to add comment');
     }
   };
 

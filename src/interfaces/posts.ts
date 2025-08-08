@@ -6,7 +6,9 @@ export interface User {
 
 export interface CommentNode {
   comment: string
+  post_id: string
   id?: string 
+  __typename: string
 }
 
 export interface CommentEdge {
@@ -40,4 +42,10 @@ export interface Post {
   users: User
   commentsCollection: CommentsCollection
   likesCollection: LikesCollection
+}
+
+export interface GetAllPostsData {
+  postsCollection: {
+    edges: { node: Post }[];
+  };
 }
