@@ -19,26 +19,18 @@ const Input: React.FC<InputProps> = ({ postId }) => {
     e.preventDefault();
     if (!text.trim()) return;
 
-    const newComment: CommentNode = {
-      post_id: postId,
-      comment: text.trim(),
-      __typename: 'comments'
-    };
+    const postingToastId = toast.loading('Posting comment...');
 
     try {
-      await addComment({
+      const { data } = await addComment({
         variables: {
           postId,
           comment: text.trim(),
         },
-        optimisticResponse: {
-          insertIntocommentsCollection: {
-            __typename: 'commentsInsertResponse',
-            affectedCount: 1,
-            records: [newComment],
-          },
-        },
         update: (cache, { data }) => {
+          if (!data?.insertIntocommentsCollection?.records?.[0]) return;
+
+          const newComment = data.insertIntocommentsCollection.records[0];
           const existing = cache.readQuery<GetAllPostsData>({ query: GET_ALL_POSTS });
           if (!existing) return;
 
@@ -74,11 +66,31 @@ const Input: React.FC<InputProps> = ({ postId }) => {
         },
       });
 
+      toast.dismiss(postingToastId);
       toast.success('Comment added');
       setText('');
-    } catch (err) {
-      console.error('Failed to submit comment:', err);
-      toast.error(err instanceof Error ? err.message : 'Failed to add comment');
+    } catch (err: unknown) {
+      toast.dismiss(postingToastId);
+
+      let message = 'Something went wrong. Please try again.';
+      if (err instanceof Error) {
+        if (err.message.includes('Failed to fetch')) {
+          message = "Couldn't post your comment, check your connection";
+        } else if (err.message.includes('Network request failed')) {
+          message = "Network error — please check your internet";
+        } else if (err.message.includes('timeout')) {
+          message = "The request took too long, try again";
+        } else if (err.message.toLowerCase().includes('unauthorized')) {
+          message = "You’re not authorized to do that";
+        } else {
+          const apolloError = err as any;
+          if (apolloError.graphQLErrors?.length) {
+            message = apolloError.graphQLErrors[0].message;
+          }
+        }
+      }
+
+      toast.error(message);
     }
   };
 

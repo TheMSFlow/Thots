@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client'
 import { GET_ALL_POSTS } from "./graphql/queries/getPosts"
 import { Post } from "./interfaces/posts"
 import PostCardSkeleton from "./components/PostCardSkeleton"
-import { Toaster } from "react-hot-toast"
+import Toast from "./components/blocks/Toast"
 
 function App() {
   const { data, loading, error } = useQuery(GET_ALL_POSTS)
@@ -32,7 +32,7 @@ function App() {
 
         </div>
       </div>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toast />
     </>
   )
 }
