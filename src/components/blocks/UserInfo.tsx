@@ -1,11 +1,17 @@
 import React from 'react'
 
-const UserInfo = ({name='Random User', username='randomuser', time='1m'}) => {
+interface UserInforProps {
+  name?: string
+  username?: string
+  time?: string
+}
+
+const UserInfo: React.FC<UserInforProps> = ({name='Random User', username='randomuser', time='1m'}) => {
   return (
     <div className='flex flex-row gap-1'>
         <p className='font-medium text-primary'>{name}</p>
         <p className='text-secondary'>{username}</p>
-        <p className='text-secondary'><span className='font-bold'>.</span>{time}</p>
+        <p className='text-secondary'><span className='font-bold pr-[2px]'>.</span>{time}</p>
     </div>
   )
 }

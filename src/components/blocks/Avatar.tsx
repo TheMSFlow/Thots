@@ -1,9 +1,13 @@
 import React from 'react'
 
-const Avatar = () => {
+interface AvatarProps {
+  initials: string
+}
+
+const Avatar: React.FC<AvatarProps> = ({initials}) => {
   return (
     <div className='rounded-full bg-brand w-10 h-10 grid place-items-center'>
-        <p className='text-xs leading-none'>MS</p>
+        <p className='text-xs leading-none'>{initials}</p>
     </div>
   )
 }
