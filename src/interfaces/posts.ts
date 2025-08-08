@@ -18,6 +18,7 @@ export interface CommentsCollection {
 }
 
 export interface LikeNode {
+    id: string
   like_amount: number
 }
 

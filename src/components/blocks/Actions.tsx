@@ -5,16 +5,18 @@ import Comment from '../buttons/Comment'
 
 type ActionsProps = {
   onCommentClick: () => void
+  onLikeClick: () => void
   commentCount: number
   likeCount: number
 }
 
 
-const Actions: React.FC<ActionsProps> = ({ onCommentClick, commentCount, likeCount }) => {
+
+const Actions: React.FC<ActionsProps> = ({ onCommentClick, commentCount, likeCount, onLikeClick }) => {
   return (
     <div className='flex flex-row gap-12 pt-2 '>
       <div className='flex gap-1 justify-center items-center'>
-        <Likes />
+        <Likes onClick={onLikeClick} />
         <p className='text-secondary text-xs'>{likeCount}</p>
       </div>
       <div className='flex gap-1 justify-center items-center'>

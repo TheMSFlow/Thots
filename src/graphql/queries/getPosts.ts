@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const GET_ALL_POSTS = gql`
   query GetAllPosts {
-    postsCollection(first: 10) {
+    postsCollection(first: 5) {
       edges {
         node {
           id
@@ -24,6 +24,7 @@ export const GET_ALL_POSTS = gql`
           likesCollection {
             edges {
               node {
+                id
                 like_amount
               }
             }

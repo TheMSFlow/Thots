@@ -6,7 +6,7 @@ interface UserInforProps {
   time?: string
 }
 
-const UserInfo: React.FC<UserInforProps> = ({name='Random User', username='randomuser', time='1m'}) => {
+const UserInfo: React.FC<UserInforProps> = ({name='Random User', username='randomuser', time='Just now'}) => {
   return (
     <div className='flex flex-row gap-1'>
         <p className='font-medium text-primary'>{name}</p>

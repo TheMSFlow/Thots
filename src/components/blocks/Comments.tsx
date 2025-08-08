@@ -2,7 +2,7 @@ import React from 'react'
 import UserInfo from './UserInfo'
 
 interface CommentsProps {
-  comments: string[] // or Comment[] if you want to extend with name, initials, etc
+  comments: string[] 
 }
 
 const Comments: React.FC<CommentsProps> = ({ comments = [] }) => {
@@ -10,7 +10,7 @@ const Comments: React.FC<CommentsProps> = ({ comments = [] }) => {
     <>
       {comments.map((comment, idx) => (
         <div
-          key={`comment.${idx}`}
+          key={`comment-${idx}`}
           className='flex flex-row justify-start gap-4 items-start w-full pb-4'
         >
           <img src='/avatar-lg.png' width={40} height={40} />

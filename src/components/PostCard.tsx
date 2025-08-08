@@ -8,6 +8,8 @@ import Collapse from './buttons/Collapse'
 import Comments from './blocks/Comments'
 import Input from './blocks/Input'
 import { Post } from '../interfaces/posts'
+import { useMutation } from '@apollo/client';
+import { UPDATE_LIKE_AMOUNT } from '../graphql/mutations/incrementLikes';
 
 type PostCardProps = Post
 
@@ -21,11 +23,34 @@ const PostCard = ({
   commentsCollection
 }: PostCardProps) => {
     const [isExpanded, setIsExpanded] = useState(false)
+    const likeNode = likesCollection?.edges?.[0]?.node
+    const [likeCount, setLikeCount] = useState(Number(likeNode?.like_amount) || 0)
+    const likeId = likeNode?.id
+
+
+    const [updateLike] = useMutation(UPDATE_LIKE_AMOUNT)
+
+    const handleLike = async () => {
+    if (!likeId) return
+
+    try {
+        await updateLike({
+        variables: {
+            id: likeId,
+            like_amount: String(Number(likeCount) + 1),
+        },
+        })
+
+        setLikeCount((prev) => prev + 1)
+    } catch (err) {
+        console.error('Like update failed', err)
+    }
+    }
+
 
     const toggleExpanded = () => setIsExpanded(prev => !prev)
 
   const comments = commentsCollection?.edges?.map(edge => edge.node.comment) ?? []
-  const likes = likesCollection?.edges?.[0]?.node?.like_amount || 0
 
   return (
     <>
@@ -53,9 +78,8 @@ const PostCard = ({
                     <Actions
                         onCommentClick={toggleExpanded}
                         commentCount={comments.length}
-                        likeCount={likes}
-
-
+                        likeCount={likeCount}
+                        onLikeClick={handleLike}
                     />
 
 
