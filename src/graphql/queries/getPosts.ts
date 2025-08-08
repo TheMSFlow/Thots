@@ -1,8 +1,12 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL_POSTS = gql`
-  query GetAllPosts {
-    postsCollection(first: 5) {
+  query GetAllPosts($first: Int!, $after: Cursor) {
+    postsCollection(first: $first, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           post_id
@@ -34,4 +38,4 @@ export const GET_ALL_POSTS = gql`
       }
     }
   }
-`
+`;
