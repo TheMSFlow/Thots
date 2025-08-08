@@ -5,6 +5,7 @@ export const GET_ALL_POSTS = gql`
     postsCollection(first: 5) {
       edges {
         node {
+          post_id
           id
           content
           hashtag

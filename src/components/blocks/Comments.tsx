@@ -11,7 +11,7 @@ const Comments: React.FC<CommentsProps> = ({ comments = [] }) => {
       {comments.map((comment, idx) => (
         <div
           key={`comment-${idx}`}
-          className='flex flex-row justify-start gap-4 items-start w-full pb-4'
+          className='flex flex-row justify-start gap-4 items-start w-full py-4'
         >
           <img src='/avatar-lg.png' width={40} height={40} />
           <div className='flex flex-col gap-0'>
