@@ -29,7 +29,7 @@ const PostCard = ({
 
   return (
     <>
-        <div className='flex flex-col gap-8 mx-4 md:mx-8'>
+        <div className='flex flex-col mx-4 md:mx-8'>
             <div className='grid grid-cols-[40px_1fr] gap-2 h-fit border-b pb-4 '>
                 <Avatar initials={users.initials} />
                 <div className='flex flex-col gap-1'>
