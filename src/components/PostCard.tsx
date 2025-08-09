@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@apollo/client';
 import Avatar from './blocks/Avatar'
 import UserInfo from './blocks/UserInfo'
@@ -11,6 +11,7 @@ import { Post } from '../interfaces/posts'
 import { useMutation } from '@apollo/client';
 import { UPDATE_LIKE_AMOUNT } from '../graphql/mutations/incrementLikes';
 import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/getCommentsByPostId';
+import { Link } from 'react-router-dom';
 
 type PostCardProps = Post
 
@@ -49,7 +50,15 @@ const PostCard = ({
     }
 
 
-    const toggleExpanded = () => setIsExpanded(prev => !prev)
+    const toggleExpanded = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsExpanded(prev => !prev);
+    };
+
+    const handleShare = () => {
+        
+    }
 
     // Fetch comments for this post live from cache/server
   const { data } = useQuery(GET_COMMENTS_BY_POST_ID, {
@@ -60,14 +69,14 @@ const PostCard = ({
 
   return (
     <>
-        <div className='flex flex-col mx-4 md:mx-8'>
+        <div className='flex flex-col mx-4 md:mx-8 hover:bg-[#f3f3f376] rounded-lg'>
             <div className='grid grid-cols-[40px_1fr] gap-2 h-fit border-b pb-4 '>
                 <Avatar initials={users.initials} />
                 <div className='flex flex-col gap-1'>
                     <div className='flex justify-between items-center w-full'>
                         <UserInfo name={users.name} username={users.username} time={time} />
                         <div 
-                        onClick={toggleExpanded}
+                        onClick={(e) => toggleExpanded(e)}
                         className="transition-transform duration-300 ease-in-out cursor-pointer"
                         >
                             <div
@@ -82,10 +91,23 @@ const PostCard = ({
                     </div>
                     <p>{content} <span className='text-accent'>{hashtag}</span></p>
                     <Actions
-                        onCommentClick={toggleExpanded}
+                        onCommentClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleExpanded(e);
+                        }}
+                        onLikeClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleLike();
+                        }}
+                        onShareClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleShare();
+                        }}
                         commentCount={comments.length}
                         likeCount={likeCount}
-                        onLikeClick={handleLike}
                     />
 
 

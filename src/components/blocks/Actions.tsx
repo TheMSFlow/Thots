@@ -4,15 +4,16 @@ import Share from '../buttons/Share'
 import Comment from '../buttons/Comment'
 
 type ActionsProps = {
-  onCommentClick: () => void
-  onLikeClick: () => void
+  onCommentClick: (e:React.MouseEvent) => void
+  onLikeClick: (e:React.MouseEvent) => void
+  onShareClick: (e:React.MouseEvent) => void
   commentCount: number
   likeCount: number
 }
 
 
 
-const Actions: React.FC<ActionsProps> = ({ onCommentClick, commentCount, likeCount, onLikeClick }) => {
+const Actions: React.FC<ActionsProps> = ({ onCommentClick, commentCount, likeCount, onLikeClick, onShareClick }) => {
   return (
     <div className='flex flex-row gap-12 pt-2 '>
       <div className='flex gap-1 justify-center items-center'>
@@ -24,7 +25,7 @@ const Actions: React.FC<ActionsProps> = ({ onCommentClick, commentCount, likeCou
         <p className='text-secondary text-xs'>{commentCount}</p>
       </div>
       <div className='flex justify-center items-center'>
-        <Share />
+        <Share onClick={onShareClick} />
       </div>
     </div>
   )

@@ -95,7 +95,7 @@ const Input: React.FC<InputProps> = ({ postId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-4 py-4 px-4 rounded-lg bg-white border">
+    <form onSubmit={handleSubmit} className="flex gap-4 py-4 px-4 rounded-lg bg-white border -mt-1">
       <img src="/avatar-md.png" width={35} height={35} />
       <div className="flex-1">
         <input

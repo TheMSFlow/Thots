@@ -1,7 +1,7 @@
 import React from 'react'
 
 type LikesProps = {
-  onClick: () => void
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 const Likes: React.FC<LikesProps> = ({onClick}) => {

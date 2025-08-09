@@ -1,7 +1,7 @@
 import React from 'react'
 
 type CommentProps = {
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 const Comment: React.FC<CommentProps> = ({ onClick }) => {

@@ -1,6 +1,10 @@
 import React from 'react'
 
-const Share: React.FC = () => {
+type ShareProps = {
+  onClick?: (e: React.MouseEvent) => void;
+}
+
+const Share: React.FC<ShareProps> = () => {
   return (
     <button className="bg-transparent hover:bg-hover active:bg-pressed active:scale-90 transition-all duration-200 ease-in-out grid place-items-center w-6 h-6 rounded-md">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
