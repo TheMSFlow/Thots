@@ -26,7 +26,6 @@ const ShareModal: React.FC<ShareModalProps> = ({ postId, onClose }) => {
       })
       onClose()
     } catch (err) {
-      console.error('Sharing failed:', err)
       toast.error('Sharing failed. Please try again.')
     }
   }

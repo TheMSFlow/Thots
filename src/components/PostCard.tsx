@@ -14,6 +14,7 @@ import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/getCommentsByPostId'
 import { GetCommentsByPostIdData } from '../interfaces/posts';
 import { useNavigate } from 'react-router-dom'
 import { Link, useLocation } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 type PostCardProps = Post
 
@@ -49,7 +50,7 @@ const PostCard = ({
 
         setLikeCount((prev) => prev + 1)
     } catch (err) {
-        console.error('Like update failed', err)
+        toast.error('Like update failed')
     }
     }
 

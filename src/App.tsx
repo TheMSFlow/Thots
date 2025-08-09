@@ -8,12 +8,8 @@ import { Post } from "./interfaces/posts"
 import PostCardSkeleton from "./components/PostCardSkeleton"
 import Toast from "./components/blocks/Toast"
 import { useInView } from "react-intersection-observer"
-import { Link, useLocation } from "react-router-dom";
 
 function App() {
-  const location = useLocation();
-  const isHomePage = location.pathname === "/"
-
   const { ref, inView } = useInView({ threshold: 0.5 });
   const { data, loading, error, fetchMore } = useQuery(GET_ALL_POSTS, {
     variables: { first: 3 },
@@ -52,8 +48,6 @@ function App() {
 
 
    if (error) {
-    console.error('GraphQL error:', error.graphQLErrors)
-    console.error('Network error:', error.networkError)
     return (
       <p className="flex justify-center items-center h-screen px-4 text-center">Error: {error.message}</p>
     );
