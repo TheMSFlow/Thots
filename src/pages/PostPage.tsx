@@ -29,6 +29,7 @@ const PostPage = () => {
   
 
   const post = data?.postsCollection?.edges?.[0]?.node;
+  
 
   const handleGoBack = () => {
 

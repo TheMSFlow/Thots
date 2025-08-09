@@ -11,7 +11,7 @@ import { Post } from '../interfaces/posts'
 import { useMutation } from '@apollo/client';
 import { UPDATE_LIKE_AMOUNT } from '../graphql/mutations/incrementLikes';
 import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/getCommentsByPostId';
-import { Link } from 'react-router-dom';
+import { GetCommentsByPostIdData } from '../interfaces/posts';
 
 type PostCardProps = Post
 
@@ -57,15 +57,16 @@ const PostCard = ({
     };
 
     const handleShare = () => {
-        
+
     }
 
     // Fetch comments for this post live from cache/server
-  const { data } = useQuery(GET_COMMENTS_BY_POST_ID, {
+  const { data, refetch } = useQuery<GetCommentsByPostIdData>(GET_COMMENTS_BY_POST_ID, {
     variables: { postId: post_id },
+    fetchPolicy: "network-only",
   });
 
-  const comments = commentsCollection?.edges?.map(edge => edge.node.comment) ?? []
+  const comments = data?.commentsCollection?.edges?.map(edge => edge.node.comment) ?? [];
 
   return (
     <>
@@ -121,7 +122,7 @@ const PostCard = ({
             >
                 <div className="flex flex-col gap-0 w-full pb-10">
                     <Comments comments={comments} />
-                    <Input postId={post_id} />
+                    <Input postId={post_id} onCommentAdded={refetch}  />
 
                 </div>
             </div>

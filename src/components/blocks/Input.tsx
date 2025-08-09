@@ -8,10 +8,11 @@ import toast from 'react-hot-toast';
 
 interface InputProps {
   postId: string;
+  onCommentAdded?: () => void;
 }
 
 
-const Input: React.FC<InputProps> = ({ postId }) => {
+const Input: React.FC<InputProps> = ({ postId, onCommentAdded}) => {
   const [text, setText] = useState('');
   const [addComment, { loading }] = useMutation(ADD_COMMENT);
 
@@ -68,6 +69,11 @@ const Input: React.FC<InputProps> = ({ postId }) => {
 
       toast.dismiss(postingToastId);
       toast.success('Comment added');
+
+      if (onCommentAdded) {
+        onCommentAdded();
+      }
+      
       setText('');
     } catch (err: unknown) {
       toast.dismiss(postingToastId);

@@ -49,3 +49,11 @@ export interface GetAllPostsData {
     edges: { node: Post }[];
   };
 }
+
+export interface GetCommentsByPostIdData {
+  commentsCollection: {
+    edges: {
+      node: CommentNode;
+    }[];
+  };
+}
