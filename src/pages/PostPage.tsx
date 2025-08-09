@@ -50,7 +50,7 @@ const PostPage = () => {
         </div>
       </div>
       <Toast />
-      <div className="w-full flex justify-center items-center -mt-8 ">
+      <div className="w-full flex justify-center items-center lg:-mt-8 mb-10">
         <Link to={'/'}
         className="flex w-fit justify-center items-center bg-accent px-4 py-2 rounded-md text-white hover:text-primary hover:bg-brand active:scale-90 transition-all duration-200 ease-in-out">
           Go Home

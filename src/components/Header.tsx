@@ -1,9 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Header: React.FC = () => {
   return (
     <div className='fixed z-50 top-0 w-full text-center font-jockey text-2xl lg:text-4xl border-b pt-4 lg:pb-1 text-brand bg-white'>
-        Thots...
+        <Link to={'/'}>Thots...</Link>
     </div>
   )
 }
