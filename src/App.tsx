@@ -69,7 +69,7 @@ function App() {
             isHomePage ? (
               <Link
                 key={post.post_id}
-                to={`/posts/${post.post_id}`}
+                to={`/post/${post.post_id}`}
                 className="block"
               >
                 <PostCard {...post} />

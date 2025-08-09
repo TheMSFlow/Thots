@@ -12,6 +12,8 @@ import { useMutation } from '@apollo/client';
 import { UPDATE_LIKE_AMOUNT } from '../graphql/mutations/incrementLikes';
 import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/getCommentsByPostId';
 import { GetCommentsByPostIdData } from '../interfaces/posts';
+import ShareModal from './blocks/ShareModal';
+import { useNavigate } from 'react-router-dom'
 
 type PostCardProps = Post
 
@@ -28,7 +30,7 @@ const PostCard = ({
     const likeNode = likesCollection?.edges?.[0]?.node
     const [likeCount, setLikeCount] = useState(Number(likeNode?.like_amount) || 0)
     const likeId = likeNode?.id
-
+    const navigate = useNavigate();
 
     const [updateLike] = useMutation(UPDATE_LIKE_AMOUNT)
 
@@ -56,10 +58,6 @@ const PostCard = ({
     setIsExpanded(prev => !prev);
     };
 
-    const handleShare = () => {
-
-    }
-
     // Fetch comments for this post live from cache/server
   const { data, refetch } = useQuery<GetCommentsByPostIdData>(GET_COMMENTS_BY_POST_ID, {
     variables: { postId: post_id },
@@ -67,6 +65,13 @@ const PostCard = ({
   });
 
   const comments = data?.commentsCollection?.edges?.map(edge => edge.node.comment) ?? [];
+
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/post/${post_id}`, { state: { openShareModal: true } })
+  }
+
 
   return (
     <>
@@ -102,11 +107,7 @@ const PostCard = ({
                             e.stopPropagation();
                             handleLike();
                         }}
-                        onShareClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleShare();
-                        }}
+                        onShareClick={handleShareClick}
                         commentCount={comments.length}
                         likeCount={likeCount}
                     />

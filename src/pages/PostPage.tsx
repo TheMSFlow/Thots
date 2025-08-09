@@ -7,10 +7,15 @@ import PostCardSkeleton from "../components/PostCardSkeleton";
 import Header from "../components/Header";
 import Spacer from "../components/blocks/Spacer";
 import Toast from "../components/blocks/Toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useApolloClient } from "@apollo/client";
+import { useLocation } from 'react-router-dom'
+import ShareModal from "../components/blocks/ShareModal";
 
 const PostPage = () => {
+  const location = useLocation()
+  const [showShareModal, setShowShareModal] = useState(false)
+
   const client = useApolloClient();
 
   const { id } = useParams<{ id: string }>();
@@ -26,14 +31,17 @@ const PostPage = () => {
       client.cache.gc();
     };
   }, []);
+
+  useEffect(() => {
+    if (location.state?.openShareModal) {
+      setShowShareModal(true)
+    }
+  }, [location])
+
+  const closeShareModal = () => setShowShareModal(false)
   
 
   const post = data?.postsCollection?.edges?.[0]?.node;
-  
-
-  const handleGoBack = () => {
-
-  }
 
   // if (loading) return <PostCardSkeleton />
   if (error) return <p className="flex justify-center items-center h-screen px-4 text-center">Error: {error.message}</p>;
@@ -56,6 +64,7 @@ const PostPage = () => {
           Go Home
         </Link>
       </div>
+      {showShareModal && <ShareModal postId={id!} onClose={closeShareModal} />}
     </>
   );
 }
