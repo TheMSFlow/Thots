@@ -12,8 +12,8 @@ import { useMutation } from '@apollo/client';
 import { UPDATE_LIKE_AMOUNT } from '../graphql/mutations/incrementLikes';
 import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/getCommentsByPostId';
 import { GetCommentsByPostIdData } from '../interfaces/posts';
-import ShareModal from './blocks/ShareModal';
 import { useNavigate } from 'react-router-dom'
+import { Link, useLocation } from "react-router-dom";
 
 type PostCardProps = Post
 
@@ -31,6 +31,8 @@ const PostCard = ({
     const [likeCount, setLikeCount] = useState(Number(likeNode?.like_amount) || 0)
     const likeId = likeNode?.id
     const navigate = useNavigate();
+    const location = useLocation();
+    const isHomePage = location.pathname === "/"
 
     const [updateLike] = useMutation(UPDATE_LIKE_AMOUNT)
 
@@ -76,7 +78,9 @@ const PostCard = ({
   return (
     <>
         <div className='flex flex-col mx-4 md:mx-8 hover:bg-[#f3f3f376] rounded-lg'>
-            <div className='grid grid-cols-[40px_1fr] gap-2 h-fit border-b pb-4 '>
+            <Link 
+                to={`/post/${post_id}`}
+                className='grid grid-cols-[40px_1fr] gap-2 h-fit border-b pb-4'>
                 <Avatar initials={users.initials} />
                 <div className='flex flex-col gap-1'>
                     <div className='flex justify-between items-center w-full'>
@@ -115,9 +119,12 @@ const PostCard = ({
 
 
                 </div>
-            </div>
+            </Link>
             {/* Collapsible Section */}
-            <div className={`grid overflow-hidden transition-all duration-200 ease-in-out ${
+            <div 
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            className={`grid overflow-hidden transition-all duration-200 ease-in-out ${
                 isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
             }`}
             >

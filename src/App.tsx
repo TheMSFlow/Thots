@@ -65,19 +65,7 @@ function App() {
     <Spacer />
       <div className="flex flex-col justify-start items-center gap-2 max-w-full lg:max-w-[40rem] lg:p-12 lg:bg-[#F8F8F8] lg:rounded-2xl mx-auto mb-8 lg:mb-20">
         <div className="w-full flex flex-col gap-8">
-          {posts.map((post) =>
-            isHomePage ? (
-              <Link
-                key={post.post_id}
-                to={`/post/${post.post_id}`}
-                className="block"
-              >
-                <PostCard {...post} />
-              </Link>
-            ) : (
-              <PostCard key={post.post_id} {...post} />
-            )
-          )}
+          {posts.map((post) => <PostCard key={post.post_id} {...post} />)}
 
           {/* Loader skeleton while fetching */}
           {loading &&

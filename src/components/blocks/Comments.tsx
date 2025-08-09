@@ -17,6 +17,8 @@ const Comments: React.FC<CommentsProps> = ({ comments = [] }) => {
         const commentText = typeof item === 'string' ? item : item.comment
         return (
           <div
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
             key={typeof item === 'string' ? `comment-${idx}` : item.id || `comment-${idx}`}
             className='flex flex-row justify-start gap-4 items-start w-full py-4 mb-1'
           >
